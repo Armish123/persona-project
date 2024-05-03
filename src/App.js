@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Main } from "./Main";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { LineGraph } from "./components/line-graph";
+import { FIELD_TYPES, PATH_NAME } from "./constants/commonConstants";
+import { BarGraph } from "./components/bar-graph";
+import { PieChart } from "./components/pie-chart";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path={PATH_NAME.HOME} element={<Main />} />
+        <Route
+          path={PATH_NAME.CLICKS}
+          element={<LineGraph fieldType={FIELD_TYPES.CLICKS} />}
+        />
+        <Route
+          path={PATH_NAME.IMPRESSIONS}
+          element={<LineGraph fieldType={FIELD_TYPES.IMPRESSIONS} />}
+        />
+        <Route path={PATH_NAME.CTR} element={<BarGraph />} />
+        <Route path={PATH_NAME.COUNTRY} element={<PieChart />} />
+      </Routes>
+    </Router>
   );
 }
 
