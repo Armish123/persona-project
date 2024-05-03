@@ -46,10 +46,6 @@ export const PieChart = ({
             text: "Impressions",
             fontSize: 20,
           },
-          // legend: {
-          //     display: false,
-          //     position: "right",
-          // },
         }}
       />
     </div>

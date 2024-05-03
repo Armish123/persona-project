@@ -10,6 +10,7 @@ import { PieChart } from "./components/pie-chart";
 
 export const Main = () => {
   const handleElementClick = (fieldType) => {
+    console.log("abc");
     window.location.href = FIELD_PATH_MAP[fieldType];
   };
   return (
