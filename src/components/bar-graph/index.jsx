@@ -10,6 +10,7 @@ import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { AdvertiserData } from "../../constants/AdvertiserData.js";
 import DateRangeSelector from "../date-range";
+import { Dropdown } from "../select/index.jsx";
 Chart.register(...registerables);
 
 export const BarGraph = ({ fieldType = FIELD_TYPES.CTR }) => {
@@ -19,13 +20,16 @@ export const BarGraph = ({ fieldType = FIELD_TYPES.CTR }) => {
     endDate: "",
   });
 
+  const [advertiser, setAdvertiser] = useState("All");
+
   const getAndSetGraphData = () => {
     const { xData, yData } = getDateFilteredData(
       fieldType,
       FIELD_TYPES.DATE,
       AdvertiserData,
       calendarDate.startDate,
-      calendarDate.endDate
+      calendarDate.endDate,
+      advertiser
     );
     setGraphData(() => ({
       xData,
@@ -54,19 +58,36 @@ export const BarGraph = ({ fieldType = FIELD_TYPES.CTR }) => {
   const minDateValue = getSmallestDate(AdvertiserData.map((data) => data.Date));
   const maxDateValue = getLargestDate(AdvertiserData.map((data) => data.Date));
 
+  const advertiserList = AdvertiserData.map((data) => data.Advertiser);
+
+  const uniqueAdvertiserList = ["All", ...new Set(advertiserList)];
+
+  const handleChange = (value) => {
+    setAdvertiser(() => value);
+  };
+
   useEffect(() => {
     getAndSetGraphData();
-  }, [calendarDate]);
+  }, [calendarDate, advertiser]);
   return (
     <div>
       {!isHomePage() && (
-        <DateRangeSelector
-          dateChangeHandler={dateChangeHandler}
-          minDate={minDateValue}
-          maxDate={maxDateValue}
-        />
+        <div className="flex gap-40 justify-center">
+          <div className="flex">
+            <DateRangeSelector
+              dateChangeHandler={dateChangeHandler}
+              minDate={minDateValue}
+              maxDate={maxDateValue}
+            />
+          </div>
+          <div className="flex ml-20">
+            <Dropdown
+              dropdownOption={uniqueAdvertiserList}
+              handleOption={handleChange}
+            />
+          </div>
+        </div>
       )}
-
       <Bar
         data={state}
         options={{

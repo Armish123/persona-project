@@ -6,7 +6,8 @@ export const getDateFilteredData = (
   baseField = FIELD_TYPES.DATE,
   data = AdvertiserData,
   startDate,
-  endDate
+  endDate,
+  Advertiser
 ) => {
   let filteredData = data;
   if (startDate && endDate) {
@@ -15,6 +16,11 @@ export const getDateFilteredData = (
       if (date >= startDate && date <= endDate) return dat;
     });
     console.log("temp");
+  }
+  if (Advertiser && Advertiser !== "All") {
+    filteredData = data.filter((dat) => {
+      if (dat.Advertiser === Advertiser) return dat;
+    });
   }
   const xData = filteredData.map((dat) => dat[baseField]);
   const yData = filteredData.map((dat) => dat[fieldType]);
